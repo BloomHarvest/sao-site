@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silent Agency Ops — Three Doors. One Operator.</title>
+<meta name="description" content="The GHL operator's home base. Pick your door: free trial, tactical audit, or full build.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #0A0E1A;
+    --bg-secondary: #0F1525;
+    --bg-elevated: rgba(15, 21, 37, 0.6);
+    --border: rgba(0, 212, 255, 0.12);
+    --border-strong: rgba(0, 212, 255, 0.35);
+    --border-glow: rgba(0, 212, 255, 0.6);
+    --cyan: #00D4FF;
+    --cyan-soft: rgba(0, 212, 255, 0.7);
+    --text-primary: #E8EDF5;
+    --text-secondary: #B8C5D6;
+    --text-muted: #6B7A95;
+    --text-faded: #3A4660;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Atmospheric background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 35%),
+      radial-gradient(circle at 85% 85%, rgba(10, 31, 60, 0.4) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.02) 0%, transparent 60%);
+  }
+
+  /* Subtle grain */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ NAV ============ */
+  
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 20px 32px;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 14, 26, 0.7);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--cyan);
+    border-radius: 6px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .logo-mark::before,
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    background: var(--cyan);
+    border-radius: 1px;
+  }
+
+  .logo-mark::before {
+    width: 8px;
+    height: 1.5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .logo-mark::after {
+    width: 1.5px;
+    height: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .nav-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .nav-meta-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--cyan);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ============ CONTAINER ============ */
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ============ HERO ============ */
+
+  .hero {
+    padding: 120px 0 80px;
+    position: relative;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid var(--border-strong);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  .hero-divider {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, var(--border-strong), transparent);
+    max-width: 200px;
+  }
+
+  .hero-meta-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 60px;
+    align-items: end;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1.6fr 1fr;
+      gap: 80px;
+    }
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+  }
+
+  .hero-title-line {
+    display: block;
+    font-size: clamp(56px, 9vw, 112px);
+  }
+
+  .hero-title-line:nth-child(2) {
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title-line:nth-child(3) {
+    color: var(--text-muted);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(40px, 7vw, 80px);
+  }
+
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    font-weight: 300;
+    max-width: 380px;
+  }
+
+  .hero-subtitle .accent {
+    color: var(--cyan);
+    font-weight: 500;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--cyan);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ============ DOORS SECTION ============ */
+
+  .doors-section {
+    padding: 80px 0 120px;
+    position: relative;
+  }
+
+  .doors-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .doors-instruction {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .doors-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .doors-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+  }
+
+  /* Door card — the key component */
+  .door {
+    position: relative;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 32px 32px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+  }
+
+  /* Top accent line */
+  .door::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.4;
+    transition: opacity 0.4s ease;
+  }
+
+  /* Hover glow */
+  .door::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.06) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+
+  .door:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(0, 212, 255, 0.1);
+  }
+
+  .door:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 12px var(--cyan);
+  }
+
+  .door:hover::after {
+    opacity: 1;
+  }
+
+  .door-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .door-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  .door-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--cyan);
+  }
+
+  .door:hover .door-icon {
+    background: var(--cyan);
+    color: var(--bg-primary);
+    border-color: var(--cyan);
+    transform: rotate(45deg);
+  }
+
+  .door-icon svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  .door-question {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    flex-grow: 0;
+  }
+
+  .door-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  .door-features {
+    list-style: none;
+    margin-bottom: 28px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  .door-features li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .door-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 8px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  .door-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .door-cta-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .door-cta-arrow {
+    color: var(--cyan);
+    transition: transform 0.3s ease;
+  }
+
+  .door:hover .door-cta-arrow {
+    transform: translateX(6px);
+  }
+
+  /* Door 1 specific — affiliate */
+  .door-1 .door-outcome {
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ============ PROOF SECTION ============ */
+
+  .proof-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .proof-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+  }
+
+  .proof-meta {
+    margin-bottom: 32px;
+  }
+
+  .proof-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+
+  .proof-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .proof-text .accent {
+    color: var(--cyan);
+    font-weight: 500;
+  }
+
+  .proof-list {
+    list-style: none;
+    margin-top: 32px;
+  }
+
+  .proof-list li {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .proof-list li:last-child {
+    border-bottom: none;
+  }
+
+  .proof-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    font-weight: 600;
+    min-width: 36px;
+    padding-top: 4px;
+  }
+
+  .proof-item-content {
+    flex: 1;
+  }
+
+  .proof-item-title {
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .proof-item-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ============ FOOTER ============ */
+
+  .footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footer-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+  }
+
+  .footer-brand-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 320px;
+  }
+
+  .footer-col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .footer-list {
+    list-style: none;
+  }
+
+  .footer-list li {
+    padding: 4px 0;
+  }
+
+  .footer-list a {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-list a:hover {
+    color: var(--cyan);
+  }
+
+  .footer-disclosure {
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .footer-disclosure-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    letter-spacing: 0.3px;
+  }
+
+  .footer-disclosure-text strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faded);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ============ ANIMATIONS ============ */
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate {
+    animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .animate-1 { animation-delay: 0.1s; }
+  .animate-2 { animation-delay: 0.2s; }
+  .animate-3 { animation-delay: 0.3s; }
+  .animate-4 { animation-delay: 0.4s; }
+  .animate-5 { animation-delay: 0.5s; }
+  .animate-6 { animation-delay: 0.6s; }
+
+  /* ============ RESPONSIVE ============ */
+
+  @media (max-width: 767px) {
+    .container { padding: 0 20px; }
+    .nav { padding: 16px 20px; }
+    .nav-meta { display: none; }
+    .hero { padding: 60px 0 50px; }
+    .hero-grid { gap: 40px; }
+    .hero-side { padding-bottom: 0; }
+    .doors-section { padding: 50px 0 80px; }
+    .door { min-height: auto; padding: 28px 24px 28px; }
+    .door-question { font-size: 24px; }
+    .proof-section { padding: 60px 0; }
+    .footer { padding: 40px 0 30px; }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark"></span>
+        <span>SILENT AGENCY OPS</span>
+      </a>
+      <div class="nav-meta">
+        <span class="nav-meta-dot"></span>
+        Currently Building · HVAC
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container">
+
+      <div class="hero-meta animate animate-1">
+        <span class="pill">
+          <span class="pill-dot"></span>
+          For GHL Operators
+        </span>
+        <div class="hero-divider"></div>
+        <span class="hero-meta-text">SYSTEMS · NOT HYPE</span>
+      </div>
+
+      <div class="hero-grid">
+
+        <h1 class="hero-title animate animate-2">
+          <span class="hero-title-line">Three doors.</span>
+          <span class="hero-title-line">One operator.</span>
+          <span class="hero-title-line">Pick your path.</span>
+        </h1>
+
+        <div class="hero-side animate animate-3">
+          <p class="hero-subtitle">
+            The GHL operator's home base. <span class="accent">No discovery calls. No fluff.</span> Three honest paths based on where you actually are.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ THREE DOORS ============ -->
+  <section class="doors-section">
+    <div class="container">
+
+      <div class="doors-meta animate animate-4">
+        <span class="pill">
+          <span class="pill-dot"></span>
+          02 · The Three Doors
+        </span>
+        <span class="doors-instruction">Pick the one that's true →</span>
+      </div>
+
+      <div class="doors-grid">
+
+        <!-- DOOR 1: AFFILIATE -->
+        <a href="/free-trial" class="door door-1 animate animate-4">
+          <div class="door-header">
+            <span class="door-num">DOOR · 01</span>
+            <div class="door-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M2 12h20"/>
+              </svg>
+            </div>
+          </div>
+
+          <h2 class="door-question">I don't have GHL yet.</h2>
+
+          <p class="door-description">
+            Start the free trial through my affiliate link. You get the trial. I send you the Quick-Start Kit. We both win.
+          </p>
+
+          <ul class="door-features">
+            <li>Free GHL trial via affiliate link</li>
+            <li>Universal lead-capture snapshot</li>
+            <li>60-second response automation</li>
+            <li>5-day welcome nurture sequence</li>
+            <li>30-day support included</li>
+          </ul>
+
+          <div class="door-cta">
+            <span class="door-cta-text">Get the trial + kit</span>
+            <svg class="door-cta-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- DOOR 2: AUDIT -->
+        <a href="/silent-audit" class="door door-2 animate animate-5">
+          <div class="door-header">
+            <span class="door-num">DOOR · 02</span>
+            <div class="door-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </div>
+          </div>
+
+          <h2 class="door-question">I have GHL. I'm stuck.</h2>
+
+          <p class="door-description">
+            Take The Silent Audit. Seven tactical questions. Honest score. We'll show you exactly where the leak is.
+          </p>
+
+          <ul class="door-features">
+            <li>7-question diagnostic (90 seconds)</li>
+            <li>Tactical score with exact pain point</li>
+            <li>No email gate until end</li>
+            <li>Routes you to the fix path</li>
+            <li>Most operators land here</li>
+          </ul>
+
+          <div class="door-cta">
+            <span class="door-cta-text">Take the audit</span>
+            <svg class="door-cta-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- DOOR 3: BUILD -->
+        <a href="/engine-build" class="door door-3 animate animate-6">
+          <div class="door-header">
+            <span class="door-num">DOOR · 03</span>
+            <div class="door-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12l2-2 4 4 8-8 4 4"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <h2 class="door-question">Build it for me.</h2>
+
+          <p class="door-description">
+            Skip the audit. You know what's broken. Book a consultation for a custom Engine Build — capacity is one client per month.
+          </p>
+
+          <ul class="door-features">
+            <li>$5,000–$15,000 custom build</li>
+            <li>$997/month operating retainer</li>
+            <li>Full Engine Assessment included</li>
+            <li>AI agents + GHL architecture</li>
+            <li>Capacity: 1 build per month</li>
+          </ul>
+
+          <div class="door-cta">
+            <span class="door-cta-text">Book a build call</span>
+            <svg class="door-cta-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROOF / WHAT WE BUILD ============ -->
+  <section class="proof-section">
+    <div class="container">
+
+      <div class="proof-grid">
+
+        <div>
+          <div class="proof-meta">
+            <span class="pill">
+              <span class="pill-dot"></span>
+              03 · What gets built
+            </span>
+          </div>
+
+          <h2 class="proof-title">
+            Working systems.<br>
+            Not theory.
+          </h2>
+
+          <p class="proof-text">
+            Every system on this site is something we've installed in <span class="accent">a real, running business</span>. The follow-up engines, the dashboards, the agents — they pay rent before they get sold.
+          </p>
+
+          <p class="proof-text">
+            Real operator. Real systems. <span class="accent">Pick a door.</span>
+          </p>
+        </div>
+
+        <ul class="proof-list">
+
+          <li>
+            <span class="proof-num">01</span>
+            <div class="proof-item-content">
+              <div class="proof-item-title">Lead capture in 60 seconds</div>
+              <div class="proof-item-desc">Inbound lead → instant SMS to operator → automated welcome sequence in motion before they finish typing the second message.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="proof-num">02</span>
+            <div class="proof-item-content">
+              <div class="proof-item-title">Industry-specific snapshots</div>
+              <div class="proof-item-desc">HVAC, Roofing, Dental, Real Estate. Pre-built GHL infrastructure that drops in with your industry's actual workflows.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="proof-num">03</span>
+            <div class="proof-item-content">
+              <div class="proof-item-title">No-show recovery loops</div>
+              <div class="proof-item-desc">Booked appointments that don't show up are revenue you've already paid to acquire. Recovery sequences turn 30% of them back into closed deals.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="proof-num">04</span>
+            <div class="proof-item-content">
+              <div class="proof-item-title">AI agents for ops</div>
+              <div class="proof-item-desc">Voice and text agents handling intake, qualification, and follow-up so your team only touches deals that are real.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="proof-num">05</span>
+            <div class="proof-item-content">
+              <div class="proof-item-title">Visual dashboards</div>
+              <div class="proof-item-desc">Throughput, response time, conversion at every stage. The data your team actually uses, not the data nobody opens.</div>
+            </div>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <div class="footer-brand-logo">
+            <span class="logo-mark"></span>
+            <span>SILENT AGENCY OPS</span>
+          </div>
+          <p class="footer-brand-text">
+            The GHL operator's home base. Three doors. One operator. Working systems.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Doors</h4>
+          <ul class="footer-list">
+            <li><a href="/free-trial">Door 1 · Free Trial</a></li>
+            <li><a href="/silent-audit">Door 2 · Silent Audit</a></li>
+            <li><a href="/engine-build">Door 3 · Engine Build</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Legal</h4>
+          <ul class="footer-list">
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/disclosure">Earnings Disclosure</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-disclosure">
+        <p class="footer-disclosure-text">
+          <strong>Independent HighLevel Affiliate.</strong> Silent Agency Ops is an independent affiliate of HighLevel and receives commission for sign-ups via affiliate links on this site. Pricing for you stays the same whether you sign up via this link or directly with HighLevel. Results not typical or guaranteed. Your results will vary based on effort, experience, and execution.
+        </p>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 Silent Agency Ops</span>
+        <span class="footer-copy">Built with discipline.</span>
+      </div>
+
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Subtle fade-in on scroll for sections that haven't loaded
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.proof-section, .doors-meta').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
